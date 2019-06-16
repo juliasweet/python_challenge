@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #Import modules
 import os
 import csv
@@ -6,8 +5,7 @@ import csv
 #Identify path; file is in same directory as my Python file
 csvpath=os.path.join('election_data.csv')
 
-#Create an empty list in which to put the candidate names (see below; 
-#I am doubting this strategy)
+#Create a list to hold all candidate names
 candidate_Name=[]
 
 #Open sesame! Skip header.
@@ -31,7 +29,6 @@ for name in candidate_Name:
     else:
        candidates_Dictionary[name] = candidates_Dictionary[name]+1
     
-#print(candidates_Dictionary)
 
  #Create a variable for the winning candidate
  #Create a variable for the highest number of votes received
@@ -43,7 +40,16 @@ uniqueCandidates = ""
 percentReceived = ""
 votesReceived = "votes"
    
-#Loop through  
+#Loop through dictionary. 
+# Set votes as variable for loop.
+# For each candidate key, find the corresponding value (number of votes recieved)
+#   Divide vote by total votes to find percentage.
+# Put this information into a string
+# Add each candidate name, followed by the string containing their votes recieved and
+#percentage of vote received into your list
+
+#While this loop is running determine winning candidate by comparing votes recieved
+#by each candidate.
 for result in candidates_Dictionary:
     votes = candidates_Dictionary.get(result) 
     percent = float(votes)/float(votes_castTotal)* 100
@@ -53,22 +59,24 @@ for result in candidates_Dictionary:
         winning_votesReceived = votes
         winning_Candidate = result
     
-print(outcomeSummary)
-    #print(result)
-    #print(votes)
-    #print(percent)
-    #print(winning_votesReceived)
-print(winning_Candidate)
-
-#Identify winner based on popular vote
-#Done in for loop
-
+#Convert list with outcome summary to string with line breaks 
+pretty_outcomeSummary = "\n".join(outcomeSummary)
 
 #Print results and export text file
 print("Election Results:")
 print("-----------------------------------------------------------")
 print(f"Total votes:   {str(votes_castTotal)}")
 print("------------------------------------------------------------")
-print(outcomeSummary)
+print(pretty_outcomeSummary)
 print("-----------------------------------------------------------")
 print(f"Winner: {winning_Candidate}")
+
+file = open("election_results_Summary.txt", "w")
+file.write("Election Results:\n") 
+file.write("-----------------------------------------------\n") 
+file.write(f"Total votes:   {str(votes_castTotal)}\n")
+file.write("------------------------------------------------\n")
+file.write(f"{str(pretty_outcomeSummary)}\n")
+file.write("------------------------------------------------\n")
+file.write(f"Winner: {winning_Candidate}\n")
+file.close()
